@@ -1,0 +1,12 @@
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\bin\Debug\ShellExplorer.exe.config
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\bin\Debug\ShellExplorer.exe
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\bin\Debug\ShellExplorer.pdb
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\bin\Debug\GongShell.dll
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\bin\Debug\GongShell.pdb
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\bin\Debug\GongShell.xml
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\obj\Debug\ShellExplorer.csprojResolveAssemblyReference.cache
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\obj\Debug\ShellExplorer.ShellExplorer.resources
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\obj\Debug\ShellExplorer.Properties.Resources.resources
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\obj\Debug\ShellExplorer.csproj.GenerateResource.Cache
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\obj\Debug\ShellExplorer.exe
+C:\ProjectSync\gong-shell-code-93-trunk\Examples\ShellExplorer\obj\Debug\ShellExplorer.pdb
