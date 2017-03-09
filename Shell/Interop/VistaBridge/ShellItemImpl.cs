@@ -16,29 +16,32 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace GongSolutions.Shell.Interop.VistaBridge
 {
-    class ShellItemImpl : IDisposable, IShellItem
+    internal class ShellItemImpl : IDisposable, IShellItem
     {
         public ShellItemImpl(IntPtr pidl, bool owner)
         {
             if (owner)
             {
-                m_Pidl = pidl;
+                Pidl = pidl;
             }
             else
             {
-                m_Pidl = Shell32.ILClone(pidl);
+                Pidl = Shell32.ILClone(pidl);
             }
         }
 
-        ~ShellItemImpl()
+        public IntPtr Pidl { get; }
+
+        public void Dispose()
         {
-            Dispose(false);
+            Dispose(true);
         }
 
         public IntPtr BindToHandler(IntPtr pbc, Guid bhid, Guid riid)
@@ -47,30 +50,19 @@ namespace GongSolutions.Shell.Interop.VistaBridge
             {
                 return Marshal.GetIUnknownForObject(GetIShellFolder());
             }
-            else
-            {
-                throw new InvalidCastException();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
+            throw new InvalidCastException();
         }
 
         public HResult GetParent(out IShellItem ppsi)
         {
-            var pidl = Shell32.ILClone(m_Pidl);
+            var pidl = Shell32.ILClone(Pidl);
             if (Shell32.ILRemoveLastID(pidl))
             {
                 ppsi = new ShellItemImpl(pidl, true);
                 return HResult.S_OK;
             }
-            else
-            {
-                ppsi = null;
-                return HResult.MK_E_NOOBJECT;
-            }
+            ppsi = null;
+            return HResult.MK_E_NOOBJECT;
         }
 
         public IntPtr GetDisplayName(SIGDN sigdnName)
@@ -78,23 +70,20 @@ namespace GongSolutions.Shell.Interop.VistaBridge
             if (sigdnName == SIGDN.FILESYSPATH)
             {
                 var result = new StringBuilder(512);
-                if (!Shell32.SHGetPathFromIDList(m_Pidl, result))
+                if (!Shell32.SHGetPathFromIDList(Pidl, result))
                     throw new ArgumentException();
                 return Marshal.StringToHGlobalUni(result.ToString());
             }
-            else
-            {
-                var parentFolder = GetParent().GetIShellFolder();
-                var childPidl = Shell32.ILFindLastID(m_Pidl);
-                var builder = new StringBuilder(512);
-                var strret = new STRRET();
+            var parentFolder = GetParent().GetIShellFolder();
+            var childPidl = Shell32.ILFindLastID(Pidl);
+            var builder = new StringBuilder(512);
+            var strret = new STRRET();
 
-                parentFolder.GetDisplayNameOf(childPidl,
-                    (SHGNO)((int)sigdnName & 0xffff), out strret);
-                ShlWapi.StrRetToBuf(ref strret, childPidl, builder,
-                    (uint)builder.Capacity);
-                return Marshal.StringToHGlobalUni(builder.ToString());
-            }
+            parentFolder.GetDisplayNameOf(childPidl,
+                (SHGNO) ((int) sigdnName & 0xffff), out strret);
+            ShlWapi.StrRetToBuf(ref strret, childPidl, builder,
+                (uint) builder.Capacity);
+            return Marshal.StringToHGlobalUni(builder.ToString());
         }
 
         public SFGAO GetAttributes(SFGAO sfgaoMask)
@@ -103,75 +92,65 @@ namespace GongSolutions.Shell.Interop.VistaBridge
             var result = sfgaoMask;
 
             parentFolder.GetAttributesOf(1,
-                new IntPtr[] { Shell32.ILFindLastID(m_Pidl) },
+                new[] {Shell32.ILFindLastID(Pidl)},
                 ref result);
             return result & sfgaoMask;
         }
 
         public int Compare(IShellItem psi, SICHINT hint)
         {
-            var other = (ShellItemImpl)psi;
+            var other = (ShellItemImpl) psi;
             var myParent = GetParent();
             var theirParent = other.GetParent();
 
-            if (Shell32.ILIsEqual(myParent.m_Pidl, theirParent.m_Pidl))
+            if (Shell32.ILIsEqual(myParent.Pidl, theirParent.Pidl))
             {
-                return myParent.GetIShellFolder().CompareIDs((SHCIDS)hint,
-                    Shell32.ILFindLastID(m_Pidl),
-                    Shell32.ILFindLastID(other.m_Pidl));
+                return myParent.GetIShellFolder().CompareIDs((SHCIDS) hint,
+                    Shell32.ILFindLastID(Pidl),
+                    Shell32.ILFindLastID(other.Pidl));
             }
-            else
-            {
-                return 1;
-            }
+            return 1;
         }
 
-        public IntPtr Pidl
+        ~ShellItemImpl()
         {
-            get { return m_Pidl; }
+            Dispose(false);
         }
 
         protected void Dispose(bool dispose)
         {
-            Shell32.ILFree(m_Pidl);
+            Shell32.ILFree(Pidl);
         }
 
-        ShellItemImpl GetParent()
+        private ShellItemImpl GetParent()
         {
-            var pidl = Shell32.ILClone(m_Pidl);
+            var pidl = Shell32.ILClone(Pidl);
 
             if (Shell32.ILRemoveLastID(pidl))
             {
                 return new ShellItemImpl(pidl, true);
             }
-            else
-            {
-                return this;
-            }
+            return this;
         }
 
-        IShellFolder GetIShellFolder()
+        private IShellFolder GetIShellFolder()
         {
             var desktop = Shell32.SHGetDesktopFolder();
             IntPtr desktopPidl;
 
             Shell32.SHGetSpecialFolderLocation(IntPtr.Zero, CSIDL.DESKTOP,
-                out desktopPidl); ;
+                out desktopPidl);
+            ;
 
-            if (Shell32.ILIsEqual(m_Pidl, desktopPidl))
+            if (Shell32.ILIsEqual(Pidl, desktopPidl))
             {
                 return desktop;
             }
-            else
-            {
-                IntPtr result;
-                desktop.BindToObject(m_Pidl, IntPtr.Zero,
-                    typeof(IShellFolder).GUID, out result);
-                return (IShellFolder)Marshal.GetTypedObjectForIUnknown(result,
-                    typeof(IShellFolder));
-            }
+            IntPtr result;
+            desktop.BindToObject(Pidl, IntPtr.Zero,
+                typeof(IShellFolder).GUID, out result);
+            return (IShellFolder) Marshal.GetTypedObjectForIUnknown(result,
+                typeof(IShellFolder));
         }
-
-        IntPtr m_Pidl;
     }
 }

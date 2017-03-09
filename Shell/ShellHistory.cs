@@ -16,54 +16,34 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Collections.Generic;
-using System.Text;
-using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
     /// <summary>
-    /// Holds a <see cref="ShellView"/>'s navigation history.
+    ///     Holds a <see cref="ShellView" />'s navigation history.
     /// </summary>
     public class ShellHistory
     {
+        private readonly List<ShellItem> _mHistory;
+        private int _mCurrent;
 
-        /// <summary>
-        /// Clears the shell history.
-        /// </summary>
-        public void Clear()
+        internal ShellHistory()
         {
-            ShellItem current = null;
-
-            if (m_History.Count > 0)
-            {
-                current = Current;
-            }
-
-            m_History.Clear();
-
-            if (current != null)
-            {
-                Add(current);
-            }
+            _mHistory = new List<ShellItem>();
         }
 
         /// <summary>
-        /// Gets the list of folders in the <see cref="ShellView"/>'s
-        /// <b>Back</b> history.
+        ///     Gets the list of folders in the <see cref="ShellView" />'s
+        ///     <b>Back</b> history.
         /// </summary>
-        public ShellItem[] HistoryBack
-        {
-            get
-            {
-                return m_History.GetRange(0, m_Current).ToArray();
-            }
-        }
+        public ShellItem[] HistoryBack => _mHistory.GetRange(0, _mCurrent).ToArray();
 
         /// <summary>
-        /// Gets the list of folders in the <see cref="ShellView"/>'s
-        /// <b>Forward</b> history.
+        ///     Gets the list of folders in the <see cref="ShellView" />'s
+        ///     <b>Forward</b> history.
         /// </summary>
         public ShellItem[] HistoryForward
         {
@@ -71,67 +51,85 @@ namespace GongSolutions.Shell
             {
                 if (CanNavigateForward)
                 {
-                    return m_History.GetRange(m_Current + 1,
-                        m_History.Count - (m_Current + 1)).ToArray();
+                    return _mHistory.GetRange(_mCurrent + 1,
+                        _mHistory.Count - (_mCurrent + 1)).ToArray();
                 }
-                else
-                {
-                    return new ShellItem[0];
-                }
+                return new ShellItem[0];
             }
         }
 
-        internal ShellHistory()
+        internal bool CanNavigateBack => _mCurrent > 0;
+
+        internal bool CanNavigateForward => _mCurrent < _mHistory.Count - 1;
+
+        internal ShellItem Current => _mHistory[_mCurrent];
+
+        /// <summary>
+        ///     Clears the shell history.
+        /// </summary>
+        public void Clear()
         {
-            m_History = new List<ShellItem>();
+            ShellItem current = null;
+
+            if (_mHistory.Count > 0)
+            {
+                current = Current;
+            }
+
+            _mHistory.Clear();
+
+            if (current != null)
+            {
+                Add(current);
+            }
         }
 
         internal void Add(ShellItem folder)
         {
-            while (m_Current < m_History.Count - 1)
+            while (_mCurrent < _mHistory.Count - 1)
             {
-                m_History.RemoveAt(m_Current + 1);
+                _mHistory.RemoveAt(_mCurrent + 1);
             }
 
-            m_History.Add(folder);
-            m_Current = m_History.Count - 1;
+            _mHistory.Add(folder);
+            _mCurrent = _mHistory.Count - 1;
         }
 
         internal ShellItem MoveBack()
         {
-            if (m_Current == 0)
+            if (_mCurrent == 0)
             {
                 throw new InvalidOperationException("Cannot navigate back");
             }
-            return m_History[--m_Current];
+            return _mHistory[--_mCurrent];
         }
 
         internal void MoveBack(ShellItem folder)
         {
-            var index = m_History.IndexOf(folder);
+            var index = _mHistory.IndexOf(folder);
 
-            if ((index == -1) || (index >= m_Current))
+            if ((index == -1) || (index >= _mCurrent))
             {
                 throw new Exception(
                     "The requested folder could not be located in the " +
                     "'back' shell history");
             }
 
-            m_Current = index;
+            _mCurrent = index;
         }
 
         internal ShellItem MoveForward()
         {
-            if (m_Current == m_History.Count - 1)
+            if (_mCurrent == _mHistory.Count - 1)
             {
                 throw new InvalidOperationException("Cannot navigate forward");
             }
-            return m_History[++m_Current];
+            return _mHistory[++_mCurrent];
         }
 
         internal void MoveForward(ShellItem folder)
         {
-            var index = m_History.IndexOf(folder, m_Current + 1);
+            var index = _mHistory.IndexOf(folder, _mCurrent + 1);
 
             if (index == -1)
             {
@@ -140,25 +138,7 @@ namespace GongSolutions.Shell
                     "'forward' shell history");
             }
 
-            m_Current = index;
+            _mCurrent = index;
         }
-
-        internal bool CanNavigateBack
-        {
-            get { return m_Current > 0; }
-        }
-
-        internal bool CanNavigateForward
-        {
-            get { return m_Current < m_History.Count - 1; }
-        }
-
-        internal ShellItem Current
-        {
-            get { return m_History[m_Current]; }
-        }
-
-        List<ShellItem> m_History;
-        int m_Current;
     }
 }

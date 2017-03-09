@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -35,7 +36,7 @@ namespace GongSolutions.Shell.Interop
         LVIF_COLUMNS = 0x0200,
         LVIF_NORECOMPUTE = 0x0800,
         LVIF_DI_SETITEM = 0x1000,
-        LVIF_COLFMT = 0x00010000,
+        LVIF_COLFMT = 0x00010000
     }
 
     [Flags]
@@ -47,7 +48,7 @@ namespace GongSolutions.Shell.Interop
         LVIS_DROPHILITED = 0x0008,
         LVIS_ACTIVATING = 0x0020,
         LVIS_OVERLAYMASK = 0x0F00,
-        LVIS_STATEIMAGEMASK = 0xF000,
+        LVIS_STATEIMAGEMASK = 0xF000
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -58,8 +59,7 @@ namespace GongSolutions.Shell.Interop
         public int iSubItem;
         public LVIS state;
         public LVIS stateMask;
-        [MarshalAs(UnmanagedType.LPTStr)]
-        public string pszText;
+        [MarshalAs(UnmanagedType.LPTStr)] public string pszText;
         public int cchTextMax;
         public int iImage;
         public int lParam;
@@ -69,7 +69,7 @@ namespace GongSolutions.Shell.Interop
     {
         LVSIL_NORMAL = 0,
         LVSIL_SMALL = 1,
-        LVSIL_STATE = 2,
+        LVSIL_STATE = 2
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -104,9 +104,10 @@ namespace GongSolutions.Shell.Interop
     public enum MF
     {
         MF_BYCOMMAND = 0x00000000,
-        MF_BYPOSITION = 0x00000400,
+        MF_BYPOSITION = 0x00000400
     }
 
+    [Flags]
     public enum MIIM : uint
     {
         MIIM_STATE = 0x00000001,
@@ -117,7 +118,7 @@ namespace GongSolutions.Shell.Interop
         MIIM_DATA = 0x00000020,
         MIIM_STRING = 0x00000040,
         MIIM_BITMAP = 0x00000080,
-        MIIM_FTYPE = 0x00000100,
+        MIIM_FTYPE = 0x00000100
     }
 
     public enum MIM : uint
@@ -127,9 +128,10 @@ namespace GongSolutions.Shell.Interop
         MIM_HELPID = 0x00000004,
         MIM_MENUDATA = 0x00000008,
         MIM_STYLE = 0x00000010,
-        MIM_APPLYTOSUBMENUS = 0x80000000,
+        MIM_APPLYTOSUBMENUS = 0x80000000
     }
 
+    [Flags]
     public enum MK
     {
         MK_LBUTTON = 0x0001,
@@ -137,7 +139,7 @@ namespace GongSolutions.Shell.Interop
         MK_SHIFT = 0x0004,
         MK_CONTROL = 0x0008,
         MK_MBUTTON = 0x0010,
-        MK_ALT = 0x1000,
+        MK_ALT = 0x1000
     }
 
     public enum MSG
@@ -176,7 +178,7 @@ namespace GongSolutions.Shell.Interop
         TPM_VERPOSANIMATION = 0x1000,
         TPM_VERNEGANIMATION = 0x2000,
         TPM_NOANIMATION = 0x4000,
-        TPM_LAYOUTRTL = 0x8000,
+        TPM_LAYOUTRTL = 0x8000
     }
 
     [Flags]
@@ -189,7 +191,7 @@ namespace GongSolutions.Shell.Interop
         TVIF_HANDLE = 0x0010,
         TVIF_SELECTEDIMAGE = 0x0020,
         TVIF_CHILDREN = 0x0040,
-        TVIF_INTEGRAL = 0x0080,
+        TVIF_INTEGRAL = 0x0080
     }
 
     [Flags]
@@ -204,11 +206,11 @@ namespace GongSolutions.Shell.Interop
         TVIS_EXPANDPARTIAL = 0x0080,
         TVIS_OVERLAYMASK = 0x0F00,
         TVIS_STATEIMAGEMASK = 0xF000,
-        TVIS_USERMASK = 0xF000,
+        TVIS_USERMASK = 0xF000
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-    struct TVITEMW
+    internal struct TVITEMW
     {
         public TVIF mask;
         public IntPtr hItem;
@@ -233,8 +235,10 @@ namespace GongSolutions.Shell.Interop
         GW_ENABLEDPOPUP = 6
     }
 
-    class User32
+    internal class User32
     {
+        public delegate bool Win32Callback(IntPtr hwnd, IntPtr lParam);
+
         [DllImport("user32.dll")]
         public static extern bool DeleteMenu(IntPtr hMenu, int uPosition,
             MF uFlags);
@@ -294,7 +298,5 @@ namespace GongSolutions.Shell.Interop
         [DllImport("user32.dll")]
         public static extern int TrackPopupMenuEx(IntPtr hmenu,
             TPM fuFlags, int x, int y, IntPtr hwnd, IntPtr lptpm);
-
-        public delegate bool Win32Callback(IntPtr hwnd, IntPtr lParam);
     }
 }

@@ -16,30 +16,37 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using GongSolutions.Shell.Interop;
 
 namespace GongSolutions.Shell
 {
+    /// <summary>
+    /// </summary>
     public class KnownFolderManager : IEnumerable<KnownFolder>
     {
+        private readonly IKnownFolderManager _mComInterface;
+        private readonly Dictionary<string, KnownFolder> _mNameIndex;
+        private readonly Dictionary<string, KnownFolder> _mPathIndex;
+
+        /// <summary>
+        /// </summary>
         public KnownFolderManager()
         {
             if (Environment.OSVersion.Version.Major >= 6)
             {
-                m_ComInterface = (IKnownFolderManager)
-                    new CoClass.KnownFolderManager();
+                // ReSharper disable once SuspiciousTypeConversion.Global
+                _mComInterface = (IKnownFolderManager) new CoClass.KnownFolderManager();
             }
             else
             {
-                m_NameIndex = new Dictionary<string, KnownFolder>();
-                m_PathIndex = new Dictionary<string, KnownFolder>();
+                _mNameIndex = new Dictionary<string, KnownFolder>();
+                _mPathIndex = new Dictionary<string, KnownFolder>();
 
                 AddFolder("Common Desktop", CSIDL.COMMON_DESKTOPDIRECTORY);
                 AddFolder("Desktop", CSIDL.DESKTOP);
@@ -52,68 +59,15 @@ namespace GongSolutions.Shell
             }
         }
 
-        public KnownFolder FindNearestParent(ShellItem item)
-        {
-            if (m_ComInterface != null)
-            {
-                IKnownFolder iKnownFolder;
-
-                if (item.IsFileSystem)
-                {
-                    if (m_ComInterface.FindFolderFromPath(item.FileSystemPath,
-                            FFFP_MODE.NEARESTPARENTMATCH, out iKnownFolder)
-                            == HResult.S_OK)
-                    {
-                        return CreateFolder(iKnownFolder);
-                    }
-                }
-                else
-                {
-                    if (m_ComInterface.FindFolderFromIDList(item.Pidl, out iKnownFolder)
-                            == HResult.S_OK)
-                    {
-                        return CreateFolder(iKnownFolder);
-                    }
-                }
-            }
-            else
-            {
-                if (item.IsFileSystem)
-                {
-                    foreach (var i in m_PathIndex)
-                    {
-                        if ((i.Key != string.Empty) &&
-                            item.FileSystemPath.StartsWith(i.Key))
-                        {
-                            return i.Value;
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var i in m_NameIndex)
-                    {
-                        if (item == i.Value.CreateShellItem())
-                        {
-                            return i.Value;
-                        }
-                    }
-                }
-            }
-
-            return null;
-        }
-
         public IEnumerator<KnownFolder> GetEnumerator()
         {
-            IntPtr buffer;
-            uint count;
-            KnownFolder[] results;
-
-            if (m_ComInterface != null)
+            if (_mComInterface != null)
             {
-                m_ComInterface.GetFolderIds(out buffer, out count);
+                IntPtr buffer;
+                uint count;
+                _mComInterface.GetFolderIds(out buffer, out count);
 
+                KnownFolder[] results;
                 try
                 {
                     results = new KnownFolder[count];
@@ -121,9 +75,9 @@ namespace GongSolutions.Shell
 
                     for (uint n = 0; n < count; ++n)
                     {
-                        var guid = (Guid)Marshal.PtrToStructure(p, typeof(Guid));
+                        var guid = (Guid) Marshal.PtrToStructure(p, typeof(Guid));
                         results[n] = GetFolder(guid);
-                        p = (IntPtr)((int)p + Marshal.SizeOf(typeof(Guid)));
+                        p = (IntPtr) ((int) p + Marshal.SizeOf(typeof(Guid)));
                     }
                 }
                 finally
@@ -138,56 +92,121 @@ namespace GongSolutions.Shell
             }
             else
             {
-                foreach (var f in m_NameIndex.Values)
+                foreach (var f in _mNameIndex.Values)
                 {
                     yield return f;
                 }
             }
         }
 
-        public KnownFolder GetFolder(Guid guid)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return CreateFolder(m_ComInterface.GetFolder(guid));
+            return ((IEnumerable<KnownFolder>) this).GetEnumerator();
         }
 
-        public KnownFolder GetFolder(string name)
+        /// <summary>
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public KnownFolder FindNearestParent(ShellItem item)
         {
-            if (m_ComInterface != null)
+            if (_mComInterface != null)
             {
                 IKnownFolder iKnownFolder;
 
-                if (m_ComInterface.GetFolderByName(name, out iKnownFolder)
+                if (item.IsFileSystem)
+                {
+                    if (_mComInterface.FindFolderFromPath(item.FileSystemPath,
+                        FFFP_MODE.NEARESTPARENTMATCH, out iKnownFolder)
                         == HResult.S_OK)
+                    {
+                        return CreateFolder(iKnownFolder);
+                    }
+                }
+                else
+                {
+                    if (_mComInterface.FindFolderFromIDList(item.Pidl, out iKnownFolder)
+                        == HResult.S_OK)
+                    {
+                        return CreateFolder(iKnownFolder);
+                    }
+                }
+            }
+            else
+            {
+                if (item.IsFileSystem)
+                {
+                    foreach (var i in _mPathIndex)
+                    {
+                        if ((i.Key != string.Empty) &&
+                            item.FileSystemPath.StartsWith(i.Key))
+                        {
+                            return i.Value;
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var i in _mNameIndex)
+                    {
+                        if (item == i.Value.CreateShellItem())
+                        {
+                            return i.Value;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public KnownFolder GetFolder(Guid guid)
+        {
+            return CreateFolder(_mComInterface.GetFolder(guid));
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        public KnownFolder GetFolder(string name)
+        {
+            if (_mComInterface != null)
+            {
+                IKnownFolder iKnownFolder;
+
+                if (_mComInterface.GetFolderByName(name, out iKnownFolder)
+                    == HResult.S_OK)
                 {
                     return CreateFolder(iKnownFolder);
                 }
             }
             else
             {
-                return m_NameIndex[name];
+                return _mNameIndex[name];
             }
 
             throw new InvalidOperationException("Unknown shell folder: " + name);
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable<KnownFolder>)this).GetEnumerator();
-        }
-
-        void AddFolder(string name, CSIDL csidl)
+        private void AddFolder(string name, CSIDL csidl)
         {
             var folder = CreateFolder(csidl, name);
 
-            m_NameIndex.Add(folder.Name, folder);
+            _mNameIndex.Add(folder.Name, folder);
 
             if (folder.ParsingName != string.Empty)
             {
-                m_PathIndex.Add(folder.ParsingName, folder);
+                _mPathIndex.Add(folder.ParsingName, folder);
             }
         }
 
-        static KnownFolder CreateFolder(CSIDL csidl, string name)
+        private static KnownFolder CreateFolder(CSIDL csidl, string name)
         {
             var path = new StringBuilder(512);
 
@@ -195,13 +214,10 @@ namespace GongSolutions.Shell
             {
                 return new KnownFolder(csidl, name, path.ToString());
             }
-            else
-            {
-                return new KnownFolder(csidl, name, string.Empty);
-            }
+            return new KnownFolder(csidl, name, string.Empty);
         }
 
-        static KnownFolder CreateFolder(IKnownFolder iface)
+        private static KnownFolder CreateFolder(IKnownFolder iface)
         {
             var def = iface.GetFolderDefinition();
 
@@ -224,7 +240,8 @@ namespace GongSolutions.Shell
             }
         }
 
-        struct PathIndexEntry
+        // ReSharper disable once UnusedMember.Local
+        private struct PathIndexEntry
         {
             public PathIndexEntry(string name, CSIDL csidl)
             {
@@ -232,57 +249,66 @@ namespace GongSolutions.Shell
                 Csidl = csidl;
             }
 
-            public string Name;
-            public CSIDL Csidl;
-        }
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            // ReSharper disable once MemberCanBePrivate.Local
+            public string Name { get; set; }
 
-        IKnownFolderManager m_ComInterface;
-        Dictionary<string, KnownFolder> m_NameIndex;
-        Dictionary<string, KnownFolder> m_PathIndex;
+            // ReSharper disable once MemberCanBePrivate.Local
+            // ReSharper disable once UnusedAutoPropertyAccessor.Local
+            public CSIDL Csidl { get; set; }
+        }
     }
 
+    /// <summary>
+    /// </summary>
     public class KnownFolder
     {
+        private readonly IKnownFolder _mComInterface;
+        private readonly CSIDL _mCsidl;
+
+        /// <summary>
+        /// </summary>
+        /// <param name="iface"></param>
+        /// <param name="name"></param>
+        /// <param name="parsingName"></param>
         public KnownFolder(IKnownFolder iface, string name, string parsingName)
         {
-            m_ComInterface = iface;
-            m_Name = name;
-            m_ParsingName = parsingName;
+            _mComInterface = iface;
+            Name = name;
+            ParsingName = parsingName;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="csidl"></param>
+        /// <param name="name"></param>
+        /// <param name="parsingName"></param>
         public KnownFolder(CSIDL csidl, string name, string parsingName)
         {
-            m_Csidl = csidl;
-            m_Name = name;
-            m_ParsingName = parsingName;
+            _mCsidl = csidl;
+            Name = name;
+            ParsingName = parsingName;
         }
 
+        /// <summary>
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// </summary>
+        public string ParsingName { get; set; }
+
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
         public ShellItem CreateShellItem()
         {
-            if (m_ComInterface != null)
+            if (_mComInterface != null)
             {
-                return new ShellItem(m_ComInterface.GetShellItem(0,
+                return new ShellItem(_mComInterface.GetShellItem(0,
                     typeof(IShellItem).GUID));
             }
-            else
-            {
-                return new ShellItem((Environment.SpecialFolder)m_Csidl);
-            }
+            return new ShellItem((Environment.SpecialFolder) _mCsidl);
         }
-
-        public string Name
-        {
-            get { return m_Name; }
-        }
-
-        public string ParsingName
-        {
-            get { return m_ParsingName; }
-        }
-
-        IKnownFolder m_ComInterface;
-        CSIDL m_Csidl;
-        string m_Name;
-        string m_ParsingName;
     }
 }

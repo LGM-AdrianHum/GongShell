@@ -9,3 +9,16 @@ C:\ProjectSync\gong-shell-code-93-trunk\Tests\ShellTest\bin\Debug\GongShell.xml
 C:\ProjectSync\gong-shell-code-93-trunk\Tests\ShellTest\bin\Debug\nunit.framework.xml
 C:\ProjectSync\gong-shell-code-93-trunk\Tests\ShellTest\obj\Debug\ShellTest.exe
 C:\ProjectSync\gong-shell-code-93-trunk\Tests\ShellTest\obj\Debug\ShellTest.pdb
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\ShellTest.exe.config
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\ShellTest.exe
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\ShellTest.pdb
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\GongShell.dll
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\nunit.framework.dll
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\GongShell.pdb
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\GongShell.xml
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\nunit.framework.xml
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\obj\Debug\ShellTest.csprojResolveAssemblyReference.cache
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\obj\Debug\ShellTest.exe
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\obj\Debug\ShellTest.pdb
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\ShellTest.exe.CodeAnalysisLog.xml
+C:\ProjectSync\gong-shell-code\Tests\ShellTest\bin\Debug\ShellTest.exe.lastcodeanalysissucceeded

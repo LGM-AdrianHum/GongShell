@@ -16,7 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
-using System;
+
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -31,10 +31,12 @@ namespace GongSolutions.Shell.Interop
     public interface IDropTarget
     {
         void DragEnter(IDataObject pDataObj, int grfKeyState,
-                       Point pt, ref int pdwEffect);
+            Point pt, ref int pdwEffect);
+
         void DragOver(int grfKeyState, Point pt, ref int pdwEffect);
         void DragLeave();
+
         void Drop(IDataObject pDataObj, int grfKeyState,
-                 Point pt, ref int pdwEffect);
+            Point pt, ref int pdwEffect);
     }
 }

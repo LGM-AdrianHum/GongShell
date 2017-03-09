@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -29,7 +30,7 @@ namespace GongSolutions.Shell.Interop
         FCW_TOOLBAR = 0x0002,
         FCW_TREE = 0x0003,
         FCW_INTERNETBAR = 0x0006,
-        FCW_PROGRESS = 0x0008,
+        FCW_PROGRESS = 0x0008
     }
 
     [Flags]
@@ -56,7 +57,7 @@ namespace GongSolutions.Shell.Interop
         SBSP_WRITENOHISTORY = 0x08000000,
         SBSP_TRUSTEDFORACTIVEX = 0x10000000,
         SBSP_REDIRECT = 0x40000000,
-        SBSP_INITIATEDBYHLINKFRAME = 0x80000000,
+        SBSP_INITIATEDBYHLINKFRAME = 0x80000000
     }
 
     [ComImport]
@@ -66,34 +67,47 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         HResult GetWindow(out IntPtr phwnd);
+
         [PreserveSig]
         HResult ContextSensitiveHelp(bool fEnterMode);
+
         [PreserveSig]
         HResult InsertMenusSB(IntPtr IntPtrShared, IntPtr lpMenuWidths);
+
         [PreserveSig]
         HResult SetMenuSB(IntPtr IntPtrShared, IntPtr holemenuRes,
-                      IntPtr IntPtrActiveObject);
+            IntPtr IntPtrActiveObject);
+
         [PreserveSig]
         HResult RemoveMenusSB(IntPtr IntPtrShared);
+
         [PreserveSig]
         HResult SetStatusTextSB(IntPtr pszStatusText);
+
         [PreserveSig]
         HResult EnableModelessSB(bool fEnable);
+
         [PreserveSig]
         HResult TranslateAcceleratorSB(IntPtr pmsg, ushort wID);
 
         [PreserveSig]
         HResult BrowseObject(IntPtr pidl, SBSP wFlags);
+
         [PreserveSig]
         HResult GetViewStateStream(uint grfMode, IntPtr ppStrm);
+
         [PreserveSig]
         HResult GetControlWindow(FCW id, out IntPtr lpIntPtr);
+
         [PreserveSig]
         HResult SendControlMsg(FCW id, MSG uMsg, uint wParam, uint lParam, IntPtr pret);
+
         [PreserveSig]
         HResult QueryActiveShellView(out IShellView ppshv);
+
         [PreserveSig]
         HResult OnViewWindowActive(IShellView ppshv);
+
         [PreserveSig]
         HResult SetToolbarItems(IntPtr lpButtons, uint nButtons, uint uFlags);
     }

@@ -16,9 +16,9 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 #pragma warning disable 1591
 
@@ -30,8 +30,8 @@ namespace GongSolutions.Shell.Interop
     public interface IShellItem
     {
         IntPtr BindToHandler(IntPtr pbc,
-            [MarshalAs(UnmanagedType.LPStruct)]Guid bhid,
-            [MarshalAs(UnmanagedType.LPStruct)]Guid riid);
+            [MarshalAs(UnmanagedType.LPStruct)] Guid bhid,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
         [PreserveSig]
         HResult GetParent(out IShellItem ppsi);
@@ -41,5 +41,5 @@ namespace GongSolutions.Shell.Interop
         SFGAO GetAttributes(SFGAO sfgaoMask);
 
         int Compare(IShellItem psi, SICHINT hint);
-    };
+    }
 }

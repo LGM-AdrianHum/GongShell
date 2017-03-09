@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -24,7 +25,6 @@ using System.Text;
 
 namespace GongSolutions.Shell.Interop
 {
-
     public enum CSIDL
     {
         DESKTOP = 0x0000,
@@ -83,7 +83,7 @@ namespace GongSolutions.Shell.Interop
         RESOURCES_LOCALIZED = 0x0039,
         COMMON_OEM_LINKS = 0x003a,
         CDBURN_AREA = 0x003b,
-        COMPUTERSNEARME = 0x003d,
+        COMPUTERSNEARME = 0x003d
     }
 
     public enum ERROR
@@ -93,13 +93,13 @@ namespace GongSolutions.Shell.Interop
         BAD_PATHNAME = 161,
         ALREADY_EXISTS = 183,
         FILENAME_EXCED_RANGE = 206,
-        CANCELLED = 1223,
+        CANCELLED = 1223
     }
 
     public enum FFFP_MODE
     {
         EXACTMATCH,
-        NEARESTPARENTMATCH,
+        NEARESTPARENTMATCH
     }
 
     [Flags]
@@ -139,6 +139,7 @@ namespace GongSolutions.Shell.Interop
         LAST = 7
     }
 
+    [Flags]
     public enum SHCONTF
     {
         FOLDERS = 0x0020,
@@ -181,7 +182,7 @@ namespace GongSolutions.Shell.Interop
         FILESYSTEM = 0x40000000,
         HASSUBFOLDER = 0x80000000,
         CONTENTSMASK = 0x80000000,
-        STORAGECAPMASK = 0x70C50008,
+        STORAGECAPMASK = 0x70C50008
     }
 
     [Flags]
@@ -190,7 +191,7 @@ namespace GongSolutions.Shell.Interop
         ALLFIELDS = 0x80000000,
         CANONICALONLY = 0x10000000,
         BITMASK = 0xFFFF0000,
-        COLUMNMASK = 0x0000FFFF,
+        COLUMNMASK = 0x0000FFFF
     }
 
     public enum SHCNE : uint
@@ -219,19 +220,20 @@ namespace GongSolutions.Shell.Interop
         DISKEVENTS = 0x0002381F,
         GLOBALEVENTS = 0x0C0581E0,
         ALLEVENTS = 0x7FFFFFFF,
-        INTERRUPT = 0x80000000,
+        INTERRUPT = 0x80000000
     }
 
+    [Flags]
     public enum SHCNRF
     {
         InterruptLevel = 0x0001,
         ShellLevel = 0x0002,
         RecursiveInterrupt = 0x1000,
-        NewDelivery = 0x8000,
+        NewDelivery = 0x8000
     }
 
     [Flags]
-    enum SHGFI
+    internal enum SHGFI
     {
         ICON = 0x000000100,
         DISPLAYNAME = 0x000000200,
@@ -259,7 +261,7 @@ namespace GongSolutions.Shell.Interop
         INFOLDER = 0x0001,
         FOREDITING = 0x1000,
         FORADDRESSBAR = 0x4000,
-        FORPARSING = 0x8000,
+        FORPARSING = 0x8000
     }
 
     public enum SICHINT : uint
@@ -284,7 +286,7 @@ namespace GongSolutions.Shell.Interop
     public enum SVSI : uint
     {
         SVSI_DESELECT = 0x00000000,
-        SVSI_SELECT = 0x00000001,
+        SVSI_SELECT = 0x00000001
     }
 
     public struct FOLDERSETTINGS
@@ -322,10 +324,8 @@ namespace GongSolutions.Shell.Interop
         public IntPtr hIcon;
         public int iIcon;
         public uint dwAttributes;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public string szDisplayName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-        public string szTypeName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)] public string szDisplayName;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)] public string szTypeName;
     }
 
     public struct SHNOTIFYSTRUCT
@@ -337,19 +337,14 @@ namespace GongSolutions.Shell.Interop
     [StructLayout(LayoutKind.Explicit, Size = 264)]
     public struct STRRET
     {
-        [FieldOffset(0)]
-        public UInt32 uType;
-        [FieldOffset(4)]
-        public IntPtr pOleStr;
-        [FieldOffset(4)]
-        public IntPtr pStr;
-        [FieldOffset(4)]
-        public UInt32 uOffset;
-        [FieldOffset(4)]
-        public IntPtr cStr;
+        [FieldOffset(0)] public uint uType;
+        [FieldOffset(4)] public IntPtr pOleStr;
+        [FieldOffset(4)] public IntPtr pStr;
+        [FieldOffset(4)] public uint uOffset;
+        [FieldOffset(4)] public IntPtr cStr;
     }
 
-    class Shell32
+    internal class Shell32
     {
         [DllImport("shell32.dll", EntryPoint = "#660")]
         public static extern bool FileIconInit(bool bFullInit);

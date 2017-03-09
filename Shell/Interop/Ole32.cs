@@ -16,10 +16,11 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using ComTypes = System.Runtime.InteropServices.ComTypes;
+using IDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
 
 #pragma warning disable 1591
 
@@ -27,20 +28,6 @@ namespace GongSolutions.Shell.Interop
 {
     public class Ole32
     {
-        [DllImport("ole32.dll")]
-        public static extern void CoTaskMemFree(IntPtr pv);
-
-        [DllImport("ole32.dll")]
-        public static extern int DoDragDrop(ComTypes.IDataObject pDataObject,
-            IDropSource pDropSource, DragDropEffects dwOKEffect,
-            out DragDropEffects pdwEffect);
-
-        [DllImport("ole32.dll")]
-        public static extern int RegisterDragDrop(IntPtr hwnd, IDropTarget pDropTarget);
-
-        [DllImport("ole32.dll")]
-        public static extern int RevokeDragDrop(IntPtr hwnd);
-
         public static Guid IID_IDataObject
         {
             get { return new Guid("0000010e-0000-0000-C000-000000000046"); }
@@ -50,5 +37,19 @@ namespace GongSolutions.Shell.Interop
         {
             get { return new Guid("00000122-0000-0000-C000-000000000046"); }
         }
+
+        [DllImport("ole32.dll")]
+        public static extern void CoTaskMemFree(IntPtr pv);
+
+        [DllImport("ole32.dll")]
+        public static extern int DoDragDrop(IDataObject pDataObject,
+            IDropSource pDropSource, DragDropEffects dwOKEffect,
+            out DragDropEffects pdwEffect);
+
+        [DllImport("ole32.dll")]
+        public static extern int RegisterDragDrop(IntPtr hwnd, IDropTarget pDropTarget);
+
+        [DllImport("ole32.dll")]
+        public static extern int RevokeDragDrop(IntPtr hwnd);
     }
 }

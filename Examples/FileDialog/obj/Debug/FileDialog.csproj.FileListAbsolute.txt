@@ -10,3 +10,17 @@ C:\ProjectSync\gong-shell-code-93-trunk\Examples\FileDialog\obj\Debug\FileDialog
 C:\ProjectSync\gong-shell-code-93-trunk\Examples\FileDialog\obj\Debug\FileDialog.csproj.GenerateResource.Cache
 C:\ProjectSync\gong-shell-code-93-trunk\Examples\FileDialog\obj\Debug\FileDialog.exe
 C:\ProjectSync\gong-shell-code-93-trunk\Examples\FileDialog\obj\Debug\FileDialog.pdb
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\FileDialog.exe.config
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\obj\Debug\FileDialog.exe
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\obj\Debug\FileDialog.pdb
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\FileDialog.exe
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\FileDialog.pdb
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\GongShell.dll
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\GongShell.pdb
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\GongShell.xml
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\obj\Debug\FileDialog.csprojResolveAssemblyReference.cache
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\obj\Debug\FileDialog.FileDialog.resources
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\obj\Debug\FileDialog.Properties.Resources.resources
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\obj\Debug\FileDialog.csproj.GenerateResource.Cache
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\FileDialog.exe.CodeAnalysisLog.xml
+C:\ProjectSync\gong-shell-code\Examples\FileDialog\bin\Debug\FileDialog.exe.lastcodeanalysissucceeded

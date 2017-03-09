@@ -9,3 +9,15 @@ C:\ProjectSync\gong-shell-code-93-trunk\Shell\obj\Debug\GongSolutions.Shell.Shel
 C:\ProjectSync\gong-shell-code-93-trunk\Shell\obj\Debug\Shell.csproj.GenerateResource.Cache
 C:\ProjectSync\gong-shell-code-93-trunk\Shell\obj\Debug\GongShell.dll
 C:\ProjectSync\gong-shell-code-93-trunk\Shell\obj\Debug\GongShell.pdb
+C:\ProjectSync\gong-shell-code\Shell\bin\Debug\GongShell.XML
+C:\ProjectSync\gong-shell-code\Shell\bin\Debug\GongShell.dll
+C:\ProjectSync\gong-shell-code\Shell\bin\Debug\GongShell.pdb
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\GongSolutions.Shell.FileDialogToolbar.resources
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\GongSolutions.Shell.PlacesToolbar.resources
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\GongSolutions.Shell.Properties.Resources.resources
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\GongSolutions.Shell.ShellItemBrowseForm.resources
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\Shell.csproj.GenerateResource.Cache
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\GongShell.dll
+C:\ProjectSync\gong-shell-code\Shell\obj\Debug\GongShell.pdb
+C:\ProjectSync\gong-shell-code\Shell\bin\Debug\GongShell.dll.CodeAnalysisLog.xml
+C:\ProjectSync\gong-shell-code\Shell\bin\Debug\GongShell.dll.lastcodeanalysissucceeded

@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -29,8 +30,7 @@ namespace GongSolutions.Shell.Interop
         public uint cmdtextf;
         public uint cwActual;
         public uint cwBuf;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)]
-        public char rgwz;
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 100)] public char rgwz;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -45,11 +45,11 @@ namespace GongSolutions.Shell.Interop
     [Guid("b722bccb-4e68-101b-a2bc-00aa00404770")]
     public interface IOleCommandTarget
     {
-        void QueryStatus(ref Guid pguidCmdGroup, UInt32 cCmds,
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] 
-            OLECMD[] prgCmds,
+        void QueryStatus(ref Guid pguidCmdGroup, uint cCmds,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] OLECMD[] prgCmds,
             ref OLECMDTEXT CmdText);
+
         void Exec(ref Guid pguidCmdGroup, uint nCmdId, uint nCmdExecOpt,
-                  ref object pvaIn, ref object pvaOut);
+            ref object pvaIn, ref object pvaOut);
     }
 }

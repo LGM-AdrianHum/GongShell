@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
@@ -23,7 +24,7 @@ using System.Windows.Forms;
 
 namespace GongSolutions.Shell
 {
-    class ShellItemEditor : UITypeEditor
+    internal class ShellItemEditor : UITypeEditor
     {
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
@@ -34,12 +35,7 @@ namespace GongSolutions.Shell
         {
             var f = new ShellItemBrowseForm();
 
-            if (f.ShowDialog() == DialogResult.OK)
-            {
-                return f.SelectedItem;
-            }
-
-            return value;
+            return f.ShowDialog() == DialogResult.OK ? f.SelectedItem : value;
         }
     }
 }

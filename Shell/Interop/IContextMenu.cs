@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -36,7 +37,7 @@ namespace GongSolutions.Shell.Interop
         NODEFAULT = 0x00000020,
         INCLUDESTATIC = 0x00000040,
         EXTENDEDVERBS = 0x00000100,
-        RESERVED = 0xffff0000,
+        RESERVED = 0xffff0000
     }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
@@ -74,7 +75,7 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         HResult QueryContextMenu(IntPtr hMenu, uint indexMenu, int idCmdFirst,
-                                 int idCmdLast, CMF uFlags);
+            int idCmdLast, CMF uFlags);
 
         void InvokeCommand(ref CMINVOKECOMMANDINFO pici);
 
@@ -112,7 +113,7 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         new HResult QueryContextMenu(IntPtr hMenu, uint indexMenu, int idCmdFirst,
-                             int idCmdLast, CMF uFlags);
+            int idCmdLast, CMF uFlags);
 
         [PreserveSig]
         new HResult InvokeCommand(ref CMINVOKECOMMANDINFO pici);

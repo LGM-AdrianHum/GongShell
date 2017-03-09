@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -29,7 +30,7 @@ namespace GongSolutions.Shell.Interop
         CDBOSC_KILLFOCUS,
         CDBOSC_SELCHANGE,
         CDBOSC_RENAME,
-        CDBOSC_STATECHANGE,
+        CDBOSC_STATECHANGE
     }
 
     [ComImport]
@@ -39,8 +40,10 @@ namespace GongSolutions.Shell.Interop
     {
         [PreserveSig]
         HResult OnDefaultCommand(IShellView ppshv);
+
         [PreserveSig]
         HResult OnStateChange(IShellView ppshv, CDBOSC uChange);
+
         [PreserveSig]
         HResult IncludeObject(IShellView ppshv, IntPtr pidl);
     }

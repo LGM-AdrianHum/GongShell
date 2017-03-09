@@ -16,42 +16,72 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using GongSolutions.Shell.Interop;
+using IServiceProvider = GongSolutions.Shell.Interop.IServiceProvider;
 
 namespace GongSolutions.Shell
 {
-    class ShellBrowser : IShellBrowser,
-                         IOleCommandTarget,
-                         Interop.IServiceProvider
+    internal class ShellBrowser : IShellBrowser,
+        IOleCommandTarget,
+        IServiceProvider
     {
+        private StatusBar _mStatusBar;
+        protected ShellView MShellView;
+
         public ShellBrowser(ShellView shellView)
         {
-            m_ShellView = shellView;
+            MShellView = shellView;
         }
 
         public StatusBar StatusBar
         {
-            get { return m_StatusBar; }
+            get { return _mStatusBar; }
             set
             {
-                m_StatusBar = value;
-                if (m_StatusBar != null)
+                _mStatusBar = value;
+                if (_mStatusBar != null)
                 {
-                    m_StatusBar.ShowPanels = true;
+                    _mStatusBar.ShowPanels = true;
                 }
             }
         }
+
+        #region IServiceProvider Members
+
+        HResult IServiceProvider.QueryService(ref Guid guidService,
+            ref Guid riid,
+            out IntPtr ppvObject)
+        {
+            if (riid == typeof(IOleCommandTarget).GUID)
+            {
+                ppvObject = Marshal.GetComInterfaceForObject(this,
+                    typeof(IOleCommandTarget));
+            }
+            else if (riid == typeof(IShellBrowser).GUID)
+            {
+                ppvObject = Marshal.GetComInterfaceForObject(this,
+                    typeof(IShellBrowser));
+            }
+            else
+            {
+                ppvObject = IntPtr.Zero;
+                return HResult.E_NOINTERFACE;
+            }
+
+            return HResult.S_OK;
+        }
+
+        #endregion
 
         #region IShellBrowser Members
 
         HResult IShellBrowser.GetWindow(out IntPtr phwnd)
         {
-            phwnd = m_ShellView.Handle;
+            phwnd = MShellView.Handle;
             return HResult.S_OK;
         }
 
@@ -60,27 +90,27 @@ namespace GongSolutions.Shell
             return HResult.E_NOTIMPL;
         }
 
-        HResult IShellBrowser.InsertMenusSB(IntPtr IntPtrShared, IntPtr lpMenuWidths)
+        HResult IShellBrowser.InsertMenusSB(IntPtr intPtrShared, IntPtr lpMenuWidths)
         {
             return HResult.E_NOTIMPL;
         }
 
-        HResult IShellBrowser.SetMenuSB(IntPtr IntPtrShared, IntPtr holemenuRes, IntPtr IntPtrActiveObject)
+        HResult IShellBrowser.SetMenuSB(IntPtr intPtrShared, IntPtr holemenuRes, IntPtr intPtrActiveObject)
         {
             return HResult.E_NOTIMPL;
         }
 
-        HResult IShellBrowser.RemoveMenusSB(IntPtr IntPtrShared)
+        HResult IShellBrowser.RemoveMenusSB(IntPtr intPtrShared)
         {
             return HResult.E_NOTIMPL;
         }
 
         HResult IShellBrowser.SetStatusTextSB(IntPtr pszStatusText)
         {
-            if (m_StatusBar != null)
+            if (_mStatusBar != null)
             {
-                m_StatusBar.Panels.Clear();
-                m_StatusBar.Panels.Add(Marshal.PtrToStringUni(pszStatusText));
+                _mStatusBar.Panels.Clear();
+                _mStatusBar.Panels.Add(Marshal.PtrToStringUni(pszStatusText));
             }
             return HResult.S_OK;
         }
@@ -90,34 +120,33 @@ namespace GongSolutions.Shell
             return HResult.E_NOTIMPL;
         }
 
-        HResult IShellBrowser.TranslateAcceleratorSB(IntPtr pmsg, ushort wID)
+        HResult IShellBrowser.TranslateAcceleratorSB(IntPtr pmsg, ushort wId)
         {
             return HResult.E_NOTIMPL;
         }
 
         HResult IShellBrowser.BrowseObject(IntPtr pidl, SBSP wFlags)
         {
-            var result = IntPtr.Zero;
-
             if ((wFlags & SBSP.SBSP_RELATIVE) != 0)
             {
-                var child = new ShellItem(m_ShellView.CurrentFolder, pidl);
+                // ReSharper disable once UnusedVariable
+                var shellItem = new ShellItem(MShellView.CurrentFolder, pidl);
             }
             else if ((wFlags & SBSP.SBSP_PARENT) != 0)
             {
-                m_ShellView.NavigateParent();
+                MShellView.NavigateParent();
             }
             else if ((wFlags & SBSP.SBSP_NAVIGATEBACK) != 0)
             {
-                m_ShellView.NavigateBack();
+                MShellView.NavigateBack();
             }
             else if ((wFlags & SBSP.SBSP_NAVIGATEFORWARD) != 0)
             {
-                m_ShellView.NavigateForward();
+                MShellView.NavigateForward();
             }
             else
             {
-                m_ShellView.Navigate(new ShellItem(ShellItem.Desktop, pidl));
+                MShellView.Navigate(new ShellItem(ShellItem.Desktop, pidl));
             }
             return HResult.S_OK;
         }
@@ -129,27 +158,24 @@ namespace GongSolutions.Shell
 
         HResult IShellBrowser.GetControlWindow(FCW id, out IntPtr lpIntPtr)
         {
-            if ((id == FCW.FCW_STATUS) && (m_StatusBar != null))
+            if ((id == FCW.FCW_STATUS) && (_mStatusBar != null))
             {
-                lpIntPtr = m_StatusBar.Handle;
+                lpIntPtr = _mStatusBar.Handle;
                 return HResult.S_OK;
             }
-            else
-            {
-                lpIntPtr = IntPtr.Zero;
-                return HResult.E_NOTIMPL;
-            }
+            lpIntPtr = IntPtr.Zero;
+            return HResult.E_NOTIMPL;
         }
 
         HResult IShellBrowser.SendControlMsg(FCW id, MSG uMsg, uint wParam,
-                                         uint lParam, IntPtr pret)
+            uint lParam, IntPtr pret)
         {
             var result = 0;
 
-            if ((id == FCW.FCW_STATUS) && (m_StatusBar != null))
+            if ((id == FCW.FCW_STATUS) && (_mStatusBar != null))
             {
-                result = User32.SendMessage(m_StatusBar.Handle,
-                    uMsg, (int)wParam, (int)lParam);
+                result = User32.SendMessage(_mStatusBar.Handle,
+                    uMsg, (int) wParam, (int) lParam);
             }
 
             if (pret != IntPtr.Zero)
@@ -180,73 +206,47 @@ namespace GongSolutions.Shell
 
         #region IOleCommandTarget Members
 
-        void IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, ref OLECMDTEXT CmdText)
+        void IOleCommandTarget.QueryStatus(ref Guid pguidCmdGroup, uint cCmds, OLECMD[] prgCmds, ref OLECMDTEXT cmdText)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        void IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdId, uint nCmdExecOpt, ref object pvaIn, ref object pvaOut)
+        void IOleCommandTarget.Exec(ref Guid pguidCmdGroup, uint nCmdId, uint nCmdExecOpt, ref object pvaIn,
+            ref object pvaOut)
         {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         #endregion
-
-        #region IServiceProvider Members
-
-        HResult Interop.IServiceProvider.QueryService(ref Guid guidService,
-                                                      ref Guid riid,
-                                                      out IntPtr ppvObject)
-        {
-            if (riid == typeof(IOleCommandTarget).GUID)
-            {
-                ppvObject = Marshal.GetComInterfaceForObject(this,
-                    typeof(IOleCommandTarget));
-            }
-            else if (riid == typeof(IShellBrowser).GUID)
-            {
-                ppvObject = Marshal.GetComInterfaceForObject(this,
-                    typeof(IShellBrowser));
-            }
-            else
-            {
-                ppvObject = IntPtr.Zero;
-                return HResult.E_NOINTERFACE;
-            }
-
-            return HResult.S_OK;
-        }
-
-        #endregion
-
-        protected ShellView m_ShellView;
-        StatusBar m_StatusBar;
     }
 
-    class DialogShellBrowser : ShellBrowser, ICommDlgBrowser
+    internal class DialogShellBrowser : ShellBrowser, ICommDlgBrowser
     {
         public DialogShellBrowser(ShellView shellView)
-            : base(shellView) { }
+            : base(shellView)
+        {
+        }
 
         #region ICommDlgBrowser Members
 
         HResult ICommDlgBrowser.OnDefaultCommand(IShellView ppshv)
         {
-            var selected = m_ShellView.SelectedItems;
+            var selected = MShellView.SelectedItems;
 
-            if ((selected.Length > 0) && (selected[0].IsFolder))
+            if ((selected.Length > 0) && selected[0].IsFolder)
             {
                 try
                 {
-                    m_ShellView.Navigate(selected[0]);
+                    MShellView.Navigate(selected[0]);
                 }
                 catch (Exception)
                 {
+                    // ignored
                 }
             }
             else
             {
-                m_ShellView.OnDoubleClick(EventArgs.Empty);
+                MShellView.OnDoubleClick(EventArgs.Empty);
             }
 
             return HResult.S_OK;
@@ -256,15 +256,16 @@ namespace GongSolutions.Shell
         {
             if (uChange == CDBOSC.CDBOSC_SELCHANGE)
             {
-                m_ShellView.OnSelectionChanged();
+                MShellView.OnSelectionChanged();
             }
             return HResult.S_OK;
         }
 
         HResult ICommDlgBrowser.IncludeObject(IShellView ppshv, IntPtr pidl)
         {
-            return m_ShellView.IncludeItem(pidl) ?
-                HResult.S_OK : HResult.S_FALSE;
+            return MShellView.IncludeItem(pidl)
+                ? HResult.S_OK
+                : HResult.S_FALSE;
         }
 
         #endregion

@@ -16,9 +16,9 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
-using System.Text;
 
 #pragma warning disable 1591
 
@@ -34,7 +34,7 @@ namespace GongSolutions.Shell.Interop
         BLEND25 = 0x00000002,
         BLEND50 = 0x00000004,
         OVERLAYMASK = 0x00000F00,
-        PRESERVEALPHA = 0x00001000,
+        PRESERVEALPHA = 0x00001000
     }
 
     public class ComCtl32

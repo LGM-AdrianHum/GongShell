@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -50,7 +51,7 @@ namespace GongSolutions.Shell.Interop
         FDAP_TOP = 0x1
     }
 
-    enum FILEOPENDIALOGOPTIONS
+    internal enum FILEOPENDIALOGOPTIONS
     {
         FOS_OVERWRITEPROMPT = 0x2,
         FOS_STRICTFILETYPES = 0x4,
@@ -84,8 +85,7 @@ namespace GongSolutions.Shell.Interop
         HResult Show(IntPtr hwndParent);
 
         void SetFileTypes(uint cFileTypes,
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)]
-            COMDLG_FILTERSPEC[] rgFilterSpec);
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] COMDLG_FILTERSPEC[] rgFilterSpec);
 
         void SetFileTypeIndex(uint iFileType);
 
@@ -158,7 +158,7 @@ namespace GongSolutions.Shell.Interop
 
         [PreserveSig]
         HResult OnOverwrite(IFileDialog pfd, IShellItem psi, out FDE_OVERWRITE_RESPONSE pResponse);
-    };
+    }
 
     [ComImport]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -167,5 +167,5 @@ namespace GongSolutions.Shell.Interop
     {
         int IncludeItem(IShellItem psi);
         int GetEnumFlagsForItem(IShellItem psi, out SHCONTF pgrfFlags);
-    };
+    }
 }

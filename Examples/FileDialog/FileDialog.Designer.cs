@@ -93,15 +93,15 @@ namespace FileDialog {
             // 
             this.mainLayout.SetColumnSpan(this.shellView, 3);
             this.shellView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.shellView.Location = new System.Drawing.Point(99, 41);
+            this.shellView.Location = new System.Drawing.Point(99, 44);
             this.shellView.Name = "shellView";
-            this.shellView.Size = new System.Drawing.Size(415, 227);
+            this.shellView.Size = new System.Drawing.Size(415, 224);
             this.shellView.StatusBar = null;
             this.shellView.TabIndex = 6;
             this.shellView.Text = "shellView1";
             this.shellView.View = GongSolutions.Shell.ShellViewStyle.List;
-            this.shellView.DoubleClick += new System.EventHandler(this.shellView_DoubleClick);
             this.shellView.SelectionChanged += new System.EventHandler(this.shellView_SelectionChanged);
+            this.shellView.DoubleClick += new System.EventHandler(this.shellView_DoubleClick);
             // 
             // openButton
             // 
@@ -129,12 +129,13 @@ namespace FileDialog {
             // 
             // toolbar
             // 
+            this.toolbar.AutoSize = true;
             this.mainLayout.SetColumnSpan(this.toolbar, 4);
             this.toolbar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolbar.Location = new System.Drawing.Point(7, 7);
             this.toolbar.Name = "toolbar";
             this.toolbar.ShellView = this.shellView;
-            this.toolbar.Size = new System.Drawing.Size(507, 28);
+            this.toolbar.Size = new System.Drawing.Size(507, 31);
             this.toolbar.TabIndex = 7;
             // 
             // filterCombo
@@ -166,11 +167,11 @@ namespace FileDialog {
             this.placesToolbar1.AutoScrollMargin = new System.Drawing.Size(0, 0);
             this.placesToolbar1.AutoScrollMinSize = new System.Drawing.Size(0, 0);
             this.placesToolbar1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.placesToolbar1.Location = new System.Drawing.Point(7, 41);
+            this.placesToolbar1.Location = new System.Drawing.Point(7, 44);
             this.placesToolbar1.Name = "placesToolbar1";
             this.mainLayout.SetRowSpan(this.placesToolbar1, 3);
             this.placesToolbar1.ShellView = this.shellView;
-            this.placesToolbar1.Size = new System.Drawing.Size(86, 285);
+            this.placesToolbar1.Size = new System.Drawing.Size(86, 282);
             this.placesToolbar1.TabIndex = 8;
             // 
             // FileDialog

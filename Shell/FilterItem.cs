@@ -47,7 +47,7 @@ namespace GongSolutions.Shell
 
         public override string ToString()
         {
-            var filterString = string.Format(" ({0})", Filter);
+            var filterString = $" ({Filter})";
 
             if (Caption.EndsWith(filterString))
             {
@@ -67,18 +67,10 @@ namespace GongSolutions.Shell
             out int existingIndex)
         {
             var result = new List<FilterItem>();
-            string[] items;
 
             existingIndex = -1;
 
-            if (filterString != string.Empty)
-            {
-                items = filterString.Split('|');
-            }
-            else
-            {
-                items = new string[0];
-            }
+            var items = filterString != string.Empty ? filterString.Split('|') : new string[0];
 
             if (items.Length%2 != 0)
             {

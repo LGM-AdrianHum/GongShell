@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -43,12 +44,12 @@ namespace GongSolutions.Shell.Interop
             [Out] out IEnumIDList ppenumIDList);
 
         void BindToObject(IntPtr pidl, IntPtr pbc,
-                          [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-                          out IntPtr ppv);
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            out IntPtr ppv);
 
         void BindToStorage(IntPtr pidl, IntPtr pbc,
-                           [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-                           out IntPtr ppv);
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            out IntPtr ppv);
 
         [PreserveSig]
         short CompareIDs(SHCIDS lParam, IntPtr pidl1, IntPtr pidl2);
@@ -56,21 +57,19 @@ namespace GongSolutions.Shell.Interop
         IntPtr CreateViewObject(IntPtr hwndOwner,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riid);
 
-        void GetAttributesOf(UInt32 cidl,
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)]
-            IntPtr[] apidl,
+        void GetAttributesOf(uint cidl,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] IntPtr[] apidl,
             ref SFGAO rgfInOut);
 
-        void GetUIObjectOf(IntPtr hwndOwner, UInt32 cidl,
-            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)]
-            IntPtr[] apidl,
-           [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            UInt32 rgfReserved,
+        void GetUIObjectOf(IntPtr hwndOwner, uint cidl,
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] IntPtr[] apidl,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            uint rgfReserved,
             out IntPtr ppv);
 
         void GetDisplayNameOf(IntPtr pidl, SHGNO uFlags, out STRRET pName);
 
         void SetNameOf(IntPtr hwnd, IntPtr pidl, string pszName,
-                       SHCONTF uFlags, out IntPtr ppidlOut);
+            SHCONTF uFlags, out IntPtr ppidlOut);
     }
 }

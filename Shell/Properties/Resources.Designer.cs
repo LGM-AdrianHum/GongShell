@@ -39,7 +39,7 @@ namespace GongSolutions.Shell.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    var temp = new global::System.Resources.ResourceManager("GongSolutions.Shell.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GongSolutions.Shell.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -65,7 +65,7 @@ namespace GongSolutions.Shell.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Back {
             get {
-                var obj = ResourceManager.GetObject("Back", resourceCulture);
+                object obj = ResourceManager.GetObject("Back", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -75,8 +75,53 @@ namespace GongSolutions.Shell.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap NewFolder {
             get {
-                var obj = ResourceManager.GetObject("NewFolder", resourceCulture);
+                object obj = ResourceManager.GetObject("NewFolder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Desktop.
+        /// </summary>
+        internal static string ShellItemBrowseForm_ShellItemBrowseForm_Desktop {
+            get {
+                return ResourceManager.GetString("ShellItemBrowseForm_ShellItemBrowseForm_Desktop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloads.
+        /// </summary>
+        internal static string ShellItemBrowseForm_ShellItemBrowseForm_Downloads {
+            get {
+                return ResourceManager.GetString("ShellItemBrowseForm_ShellItemBrowseForm_Downloads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MyComputerFolder.
+        /// </summary>
+        internal static string ShellItemBrowseForm_ShellItemBrowseForm_MyComputerFolder {
+            get {
+                return ResourceManager.GetString("ShellItemBrowseForm_ShellItemBrowseForm_MyComputerFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal.
+        /// </summary>
+        internal static string ShellItemBrowseForm_ShellItemBrowseForm_Personal {
+            get {
+                return ResourceManager.GetString("ShellItemBrowseForm_ShellItemBrowseForm_Personal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal (My Documents).
+        /// </summary>
+        internal static string ShellItemBrowseForm_ShellItemBrowseForm_Personal__My_Documents_ {
+            get {
+                return ResourceManager.GetString("ShellItemBrowseForm_ShellItemBrowseForm_Personal__My_Documents_", resourceCulture);
             }
         }
         
@@ -85,7 +130,7 @@ namespace GongSolutions.Shell.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Up {
             get {
-                var obj = ResourceManager.GetObject("Up", resourceCulture);
+                object obj = ResourceManager.GetObject("Up", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +140,7 @@ namespace GongSolutions.Shell.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap Views {
             get {
-                var obj = ResourceManager.GetObject("Views", resourceCulture);
+                object obj = ResourceManager.GetObject("Views", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

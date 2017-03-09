@@ -16,6 +16,7 @@
 // Software Foundation, Inc., 51 Franklin Street, Fifth Floor,  
 // Boston, MA 2110-1301, USA.
 //
+
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,8 +28,8 @@ namespace GongSolutions.Shell.Interop
     public class ShlWapi
     {
         [DllImport("shlwapi.dll")]
-        public static extern Int32 StrRetToBuf(ref STRRET pstr, IntPtr pidl,
-                                               StringBuilder pszBuf,
-                                               UInt32 cchBuf);
+        public static extern int StrRetToBuf(ref STRRET pstr, IntPtr pidl,
+            StringBuilder pszBuf,
+            uint cchBuf);
     }
 }
